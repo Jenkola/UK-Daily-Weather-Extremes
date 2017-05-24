@@ -63,7 +63,10 @@
 			 ' which had ' + regionObject.HSUN.$ + ' ' + regionObject.HSUN.uom + ' of sunshine.');
 		}
 
-		logExtremes(createRegionObject(regionName));
+		var regionObject = createRegionObject(regionName);
+
+		logExtremes(regionObject);
+		return regionObject;
 
 	}	
 
@@ -71,8 +74,8 @@
 	var lib = {
 
 		init: init,
-		presentUKExtremes: presentUKExtremes
-		
+		presentUKExtremes: presentUKExtremes,
+
 	}
 
 	//lib object is made available to global scope via extremesData.
