@@ -1,62 +1,76 @@
 (function(root) {
-
+	//Get data from API
 	if (extremesData.returnedData === null) {
 		extremesData.sendForData();
 	}
 
+	//Called by apigetdata.js when data is returned from Met Office API
+	function init() {
+		presentUKExtremes('UK');
+	}
 
-	function presentUKExtremes() {
+	function presentUKExtremes(regionName) {
 
-			//Array representing regions of UK
-		var extremesRegions = extremesData.returnedData.UkExtremes.Regions.Region,
-			ukWideRegionIndex = getUKindex(extremesRegions);
-
-		//Finds the index number for data representing entire UK.
-		function getUKindex (array) {
+		//Helper function to get the index number in an array containing a specified property value
+		function getIndexByProperty(array, propertyName, propertyVal) {
 			for (var i = 0; i < array.length; i++) {
-				if (array[i].id === 'uk') {
+				if (array[i][propertyName] === propertyVal) {
 					return i;
 				}
 			}
 		}
 
-		var UkWideExtremes = extremesRegions[ukWideRegionIndex].Extremes.Extreme;
+		//Creates a better formatted object for weather extremes in a specified region
+		function createRegionObject(regionName) {
+			//extremesData.returnedData is the returned object from the Met Office API call.
+			var ukExtremesData = extremesData.returnedData.UkExtremes,
+				dateOfData = ukExtremesData.extremeDate,
+				dataIssuedAt = ukExtremesData.issuedAt,
+				extremesRegionsArray = ukExtremesData.Regions.Region,	
+				regionIndex = getIndexByProperty(extremesRegionsArray, 'name', regionName),
+				extremesArr = extremesRegionsArray[regionIndex].Extremes.Extreme;
 
-		//Finds the index number for matching 'type' property.
-		function getDataTypeindex (array, type) {
-			for (var i = 0; i < array.length; i++) {
-				if (array[i].type === type) {
-					return i;
-				}
-			}
+			//Create new object
+			var returnObj = {};
+
+			returnObj.date = dateOfData;
+			returnObj.issuedAt = dataIssuedAt;
+			returnObj.region = regionName;
+			returnObj.HMAXT = extremesArr[getIndexByProperty(extremesArr, 'type', 'HMAXT')];
+			returnObj.LMAXT = extremesArr[getIndexByProperty(extremesArr, 'type', 'LMAXT')];
+			returnObj.LMINT = extremesArr[getIndexByProperty(extremesArr, 'type', 'LMINT')];
+			returnObj.HRAIN = extremesArr[getIndexByProperty(extremesArr, 'type', 'HRAIN')];
+			returnObj.HSUN = extremesArr[getIndexByProperty(extremesArr, 'type', 'HSUN')];
+
+			return returnObj;
 		}
 
-		var highestMaxTempObj = UkWideExtremes[getDataTypeindex(UkWideExtremes, 'HMAXT')];
-		var lowestMaxTempObj = UkWideExtremes[getDataTypeindex(UkWideExtremes, 'LMAXT')];
-		var lowestMinTempObj = UkWideExtremes[getDataTypeindex(UkWideExtremes, 'LMINT')];
-		var highestRainfallObj = UkWideExtremes[getDataTypeindex(UkWideExtremes, 'HRAIN')];
-		var longestSunObj = UkWideExtremes[getDataTypeindex(UkWideExtremes, 'HSUN')];		
+		//Logs data to the console for selected region object
+		function logExtremes(regionObject) {
 
-		console.log('Yesterdays highest maximum temperature was ' + highestMaxTempObj.$ + 
-			' celcius which was recorded at ' + highestMaxTempObj.locationName);
+			console.log('Data released by the Met Office at ' + regionObject.issuedAt);
+			console.log('Data is for the following date: ' + regionObject.date);
+			console.log('Data is for the following region: ' + regionObject.region);
+			console.log('The highest maximum temperature was ' + regionObject.HMAXT.$ + 
+				regionObject.HMAXT.uom + ' recorded at ' + regionObject.HMAXT.locationName);
+			console.log('The lowest maximum temperature was ' + regionObject.LMAXT.$ + 
+				regionObject.LMAXT.uom + ' recorded at ' + regionObject.LMAXT.locationName);
+			console.log('The lowest minimum temperature was ' + regionObject.LMINT.$ + 
+				regionObject.LMINT.uom + ' recorded at ' + regionObject.LMINT.locationName);		
+			console.log('The highest rainfall total was ' + regionObject.HRAIN.$ + 
+				regionObject.HRAIN.uom + ' recorded at ' + regionObject.HRAIN.locationName);		
+			console.log('The sunniest place was ' + regionObject.HSUN.locationName +
+			 ' which had ' + regionObject.HSUN.$ + ' ' + regionObject.HSUN.uom + ' of sunshine.');
+		}
 
-		console.log('Yesterdays lowest maximum temperature was ' + lowestMaxTempObj.$ + 
-			' celcius which was recorded at ' + lowestMaxTempObj.locationName);
-
-		console.log('Yesterdays lowest minimum temperature was ' + lowestMinTempObj.$ + 
-			' celcius which was recorded at ' + lowestMinTempObj.locationName);		
-
-		console.log('Yesterdays highest rainfall total was ' + highestRainfallObj.$ + 
-			'mm which was recorded at ' + highestRainfallObj.locationName);		
-
-		console.log('Yesterdays sunniest place was ' + longestSunObj.locationName +
-		 ' which had ' + longestSunObj.$ + ' hours of sunshine.');
+		logExtremes(createRegionObject(regionName));
 
 	}	
 
 	//Global methods to attempt to get API data and to access contents of returned data.
 	var lib = {
 
+		init: init,
 		presentUKExtremes: presentUKExtremes
 		
 	}
@@ -65,3 +79,23 @@
 	root.weatherApp = lib;
 
 })(this);
+
+//**REGIONS BY NAME**
+
+// "Orkney & Shetland"
+// "East of England"
+// "Strathclyde"
+// "North East England"
+// "North West England"
+// "Wales"
+// "Yorkshire & Humber"
+// "Grampian"
+// "West Midlands"
+// "Northern Ireland"
+// "South West England"
+// "Central Tayside & Fife"
+// "UK"
+// "East Midlands"
+// "London & South East England"
+// "Dumfries,Galloway,Lothian & Borders"
+// "Highland & Eilean Siar"

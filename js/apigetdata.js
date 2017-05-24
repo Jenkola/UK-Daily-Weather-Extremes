@@ -11,8 +11,8 @@
 		if(xhr.status === 200) {
 			responseObject = JSON.parse(xhr.responseText);
 			lib.returnedData = responseObject;
-
-			weatherApp.presentUKExtremes();
+			//Inititalise the app in app.js
+			weatherApp.init();
 
 		} else {
 			console.log('HTTP status code was ' + xhr.status);
