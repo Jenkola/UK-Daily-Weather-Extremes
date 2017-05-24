@@ -1,7 +1,7 @@
 (function(root) {
 	//Get data from API
-	if (extremesData.returnedData === null) {
-		extremesData.sendForData();
+	if (metOfficeData.extremesData === null) {
+		metOfficeData.getExtremesData();
 	}
 
 	//Called by apigetdata.js when data is returned from Met Office API
@@ -23,7 +23,7 @@
 		//Creates a better formatted object for weather extremes in a specified region
 		function createRegionObject(regionName) {
 			//extremesData.returnedData is the returned object from the Met Office API call.
-			var ukExtremesData = extremesData.returnedData.UkExtremes,
+			var ukExtremesData = metOfficeData.extremesData.UkExtremes,
 				dateOfData = ukExtremesData.extremeDate,
 				dataIssuedAt = ukExtremesData.issuedAt,
 				extremesRegionsArray = ukExtremesData.Regions.Region,	

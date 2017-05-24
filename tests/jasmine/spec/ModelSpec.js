@@ -10,18 +10,18 @@ describe("UK Weather Extremes", function() {
     });
 
     it("should return an object from the API call", function() {
-      expect(Object.prototype.toString.call(extremesData.returnedData)).toEqual("[object Object]");
+      expect(Object.prototype.toString.call(metOfficeData.extremesData)).toEqual("[object Object]");
     });
 
     it("should return an object which is not empty", function() {
-      expect(Object.keys(extremesData.returnedData).length).not.toEqual(0);
+      expect(Object.keys(metOfficeData.extremesData).length).not.toEqual(0);
     });
 
   });
 
   describe("app.js", function() {
 
-    describe("presentUKExtremes", function() {
+    describe("presentUKExtremes()", function() {
 
       beforeAll(function(done) {
         setTimeout(function() {
@@ -56,9 +56,10 @@ describe("UK Weather Extremes", function() {
         expect(typeof weatherApp.presentUKExtremes("UK").region).toEqual('string');
       });
 
-
-
     });
+
+
+
 
   });  
 

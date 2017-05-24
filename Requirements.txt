@@ -3,10 +3,13 @@ V0.01 COMPLETE
 	-It should be able to format the JSON object into a new object specific to the specified UK region.
 	-It should be able to log the weather extremes data for the specified UK region to the console.
 
-V0.02
+V0.02 COMPLETE
 	-Add Jasmine testing suite.
 	-Create and complete tests for V0.01.
 
-V0.03
+V0.03 COMPLETE
 	-Add jQuery.
 	-Substitute in jQuery methods for API calls and returns.
+
+TODO:
+	Find a way to to get co-ordinates from location IDs. Implement co-ords into createRegionObject().
