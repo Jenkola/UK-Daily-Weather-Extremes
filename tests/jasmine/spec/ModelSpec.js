@@ -2,20 +2,44 @@ describe("UK Weather Extremes", function() {
 
   describe("apigetdata.js", function() {
 
-    beforeEach(function(done) {
-      setTimeout(function() {
-        value = 2000;
-        done();
-      }, 500);
+    describe("getExtremesData()", function() {
+
+      beforeEach(function(done) {
+        setTimeout(function() {
+          value = 2000;
+          done();
+        }, 500);
+      });
+
+      it("should return an object from the API call", function() {
+        expect(Object.prototype.toString.call(metOfficeData.extremesData)).toEqual("[object Object]");
+      });
+
+      it("should return an object which is not empty", function() {
+        expect(Object.keys(metOfficeData.extremesData).length).not.toEqual(0);
+      });
+
     });
 
-    it("should return an object from the API call", function() {
-      expect(Object.prototype.toString.call(metOfficeData.extremesData)).toEqual("[object Object]");
-    });
+    describe("getObservationsSiteList()", function() {
 
-    it("should return an object which is not empty", function() {
-      expect(Object.keys(metOfficeData.extremesData).length).not.toEqual(0);
+      beforeEach(function(done) {
+        setTimeout(function() {
+          value = 2000;
+          done();
+        }, 500);
+      });
+
+      it("should return an object from the API call", function() {
+        expect(Object.prototype.toString.call(metOfficeData.observationSiteList)).toEqual("[object Object]");
+      });
+
+      it("should return an object which is not empty", function() {
+        expect(Object.keys(metOfficeData.observationSiteList).length).not.toEqual(0);
+      });
+
     });
+    
 
   });
 

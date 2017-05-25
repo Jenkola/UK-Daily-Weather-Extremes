@@ -1,7 +1,9 @@
 (function(root) {
 	//Get data from API
-	if (metOfficeData.extremesData === null) {
+	if (metOfficeData.extremesData === null
+		&& metOfficeData.observationSiteList === null) {
 		metOfficeData.getExtremesData();
+		metOfficeData.getObservationsSiteList();
 	}
 
 	//Called by apigetdata.js when data is returned from Met Office API
@@ -11,7 +13,8 @@
 
 	function presentUKExtremes(regionName) {
 
-		//Helper function to get the index number in an array containing a specified property value
+		//Helper function to get the index number of an array element 
+		//that contains a specified property value
 		function getIndexByProperty(array, propertyName, propertyVal) {
 			for (var i = 0; i < array.length; i++) {
 				if (array[i][propertyName] === propertyVal) {
@@ -42,6 +45,9 @@
 			returnObj.HRAIN = extremesArr[getIndexByProperty(extremesArr, 'type', 'HRAIN')];
 			returnObj.HSUN = extremesArr[getIndexByProperty(extremesArr, 'type', 'HSUN')];
 
+			//TODO: loop through relevant properties and for each location ID, call a new
+			//helper function that gets the co-ordinates of that ID by using the forecast data?
+
 			return returnObj;
 		}
 
@@ -61,6 +67,25 @@
 				regionObject.HRAIN.uom + ' recorded at ' + regionObject.HRAIN.locationName);		
 			console.log('The sunniest place was ' + regionObject.HSUN.locationName +
 			 ' which had ' + regionObject.HSUN.$ + ' ' + regionObject.HSUN.uom + ' of sunshine.');
+		}
+
+		function addCoOrdinatesToRegionObject(regionObject) {
+			//Loops through the relevant properties in regionObject
+			//i.e. HMAXT, LMAXT, LMINT, HRAIN, HSUN
+			//Grabs the 'locId' property from each one.
+			function getCoOrdinatesFromSiteId(locId) {
+				//May need to trim off any zeros at the beginning of the locID value
+				//e.g. '03529' => '3529'
+				//Loops through the array in metOfficeData.observationSiteList.Locations.Location
+				//If 'id' property in array object === locID value,
+				//Return the 'latitude' and 'longitude' properties from the array object.
+				//Return them as an object with 2 properties?
+			};
+			
+			//Add the 'latitude' and 'longitude' properties returned from getCoOrdinatesFromSiteId()
+			//into the reginObject.
+			//So that each place in the regionObject now has grid coOrdinate values as well.
+			//Build in some fallback if location could not be found in observationSiteList?
 		}
 
 		var regionObject = createRegionObject(regionName);
@@ -85,6 +110,7 @@
 
 //**REGIONS BY NAME**
 
+//In order of data array from Met Office
 // "Orkney & Shetland"
 // "East of England"
 // "Strathclyde"
@@ -102,3 +128,25 @@
 // "London & South East England"
 // "Dumfries,Galloway,Lothian & Borders"
 // "Highland & Eilean Siar"
+
+//Roughly Geographically Ordered
+// "UK"
+// "Northern Ireland"
+// "Orkney & Shetland"
+// "Highland & Eilean Siar"
+// "Grampian"
+// "Central Tayside & Fife"
+// "Strathclyde"
+// "Dumfries,Galloway,Lothian & Borders"
+// "North East England"
+// "Yorkshire & Humber"
+// "North West England"
+// "East Midlands"
+// "West Midlands"
+// "Wales"
+// "East of England"
+// "London & South East England"
+// "South West England"
+
+//**GUIDE TO DATA**
+// Rainfall is 24-hour total from 
