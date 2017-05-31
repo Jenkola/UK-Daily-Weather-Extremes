@@ -24,6 +24,16 @@
 		);
 	}
 
+	function getLocationData(locationId) {
+		var requestString = 'http://www.metoffice.gov.uk/public/data/services/locations/v2/';
+		requestString += locationId;
+		$.get(requestString,
+			function(data) {
+				lib.locationData = data;
+			})
+
+	}
+
 	//Gets site list which contains coordinates for obersvation sites. Approx 9kb.
 	function getObservationsSiteList() {
 		$.get('http://datapoint.metoffice.gov.uk/public/data/val/wxobs/all/json/sitelist?key=85d42778-8866-4eac-9f4e-ad2b5c42db1c',
@@ -40,11 +50,13 @@
 
 		getExtremesData: function() {getExtremesData();},
 		getForecastData: function(locationId) {getForecastData(locationId);},	
+		getLocationData: function(locationId) {getLocationData(locationId);},
 		getObservationsSiteList: function() {getObservationsSiteList();},	
 
 		extremesData: null,
-		observationSiteList: null,
-		forecastData: null
+		forecastData: null,
+		locationData: null,
+		observationSiteList: null	
 
 	}
 

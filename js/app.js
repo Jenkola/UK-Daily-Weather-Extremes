@@ -102,7 +102,7 @@
 				//Utilise getIndexByProperty helper function?
 				var matchingLocationIndex = getIndexByProperty(locationsArray, 'id', locId);
 				//If 'id' property in array object === locID value,
-				if(matchingLocationIndex) {
+				if(matchingLocationIndex || matchingLocationIndex === 0) {
 					//Return the 'latitude' and 'longitude' properties from the array object.
 					coOrdsObject.latitude = locationsArray[matchingLocationIndex].latitude;
 					coOrdsObject.longitude = locationsArray[matchingLocationIndex].longitude;

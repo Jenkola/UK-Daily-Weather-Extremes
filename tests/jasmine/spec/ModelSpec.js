@@ -45,7 +45,7 @@ describe("UK Weather Extremes", function() {
 
   describe("app.js", function() {
 
-    describe("presentUKExtremes()", function() {
+    describe("createRegionObject()", function() {
 
       beforeAll(function(done) {
         setTimeout(function() {
@@ -55,29 +55,33 @@ describe("UK Weather Extremes", function() {
       });
 
       it("should return an object", function() {
-        expect(Object.prototype.isPrototypeOf(weatherApp.presentUKExtremes)).toEqual(true);
+        expect(Object.prototype.isPrototypeOf(weatherApp.createRegionObject('UK'))).toEqual(true);
       });
 
       it("should return an object whose region property equals the argument called to the function", function() {
-        expect(weatherApp.presentUKExtremes('UK').region).toEqual('UK');
+        expect(weatherApp.createRegionObject('UK').region).toEqual('UK');
       });
 
-      it("should return an object with 8 properties", function() {
-        expect(Object.keys(weatherApp.presentUKExtremes("UK")).length).toEqual(8);
-      });      
+      it("should return an object with 4 properties", function() {
+        expect(Object.keys(weatherApp.createRegionObject('UK')).length).toEqual(4);
+      });     
 
-      it("should return an object where the HMAXT, HRAIN, HSUN, LMAXT, LMINT properties are nested objects", function() {
-        expect(Object.prototype.toString.call(weatherApp.presentUKExtremes("UK").HMAXT)).toEqual("[object Object]");
-        expect(Object.prototype.toString.call(weatherApp.presentUKExtremes("UK").HRAIN)).toEqual("[object Object]");
-        expect(Object.prototype.toString.call(weatherApp.presentUKExtremes("UK").HSUN)).toEqual("[object Object]");
-        expect(Object.prototype.toString.call(weatherApp.presentUKExtremes("UK").LMAXT)).toEqual("[object Object]");
-        expect(Object.prototype.toString.call(weatherApp.presentUKExtremes("UK").LMAXT)).toEqual("[object Object]");
+      it("should return an object with 'extremes' as a nested object", function() {
+        expect(Object.prototype.toString.call(weatherApp.createRegionObject('UK').extremes)).toEqual("[object Object]");
+      }); 
+
+      it("should nest HMAXT, HRAIN, HSUN, LMAXT, LMINT properties in the extremes nested object", function() {
+        expect(Object.prototype.toString.call(weatherApp.createRegionObject('UK').extremes.HMAXT)).toEqual("[object Object]");
+        expect(Object.prototype.toString.call(weatherApp.createRegionObject('UK').extremes.HRAIN)).toEqual("[object Object]");
+        expect(Object.prototype.toString.call(weatherApp.createRegionObject('UK').extremes.HSUN)).toEqual("[object Object]");
+        expect(Object.prototype.toString.call(weatherApp.createRegionObject('UK').extremes.LMAXT)).toEqual("[object Object]");
+        expect(Object.prototype.toString.call(weatherApp.createRegionObject('UK').extremes.LMAXT)).toEqual("[object Object]");
       });
 
       it("should return an object where the date, issuedAt, region properties are strings", function() {
-        expect(typeof weatherApp.presentUKExtremes("UK").date).toEqual('string');
-        expect(typeof weatherApp.presentUKExtremes("UK").issuedAt).toEqual('string');
-        expect(typeof weatherApp.presentUKExtremes("UK").region).toEqual('string');
+        expect(typeof weatherApp.createRegionObject('UK').date).toEqual('string');
+        expect(typeof weatherApp.createRegionObject('UK').issuedAt).toEqual('string');
+        expect(typeof weatherApp.createRegionObject('UK').region).toEqual('string');
       });
 
     });

@@ -19,6 +19,7 @@ V0.04
 	-It should add the grid co-ordinate values to the corresponding properties in the region object.
 
 TODO:
+	-What to do if co-ords could not be found? Fallback 1) Get a forecast from location and get coords. 2) Fallback by name at google maps stage?
 	-Implement fallback if API calls fail (using try/catch?)
 	-Get details of weather extremes displayed in DOM.
 	-Implement Google Maps API.
