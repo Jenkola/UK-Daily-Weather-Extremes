@@ -1,15 +1,15 @@
 describe("UK Weather Extremes", function() {
 
-  describe("apigetdata.js", function() {
+  describe("apigetdata.js retreives JSON objects from metOffice Datapoint service", function() {
+
+    beforeAll(function(done) {
+      setTimeout(function() {
+         value = 2000;
+         done();
+      }, 1000);
+    });
 
     describe("getExtremesData()", function() {
-
-      beforeEach(function(done) {
-        setTimeout(function() {
-          value = 2000;
-          done();
-        }, 500);
-      });
 
       it("should return an object from the API call", function() {
         expect(Object.prototype.toString.call(metOfficeData.extremesData)).toEqual("[object Object]");
@@ -23,13 +23,6 @@ describe("UK Weather Extremes", function() {
 
     describe("getObservationsSiteList()", function() {
 
-      beforeEach(function(done) {
-        setTimeout(function() {
-          value = 2000;
-          done();
-        }, 500);
-      });
-
       it("should return an object from the API call", function() {
         expect(Object.prototype.toString.call(metOfficeData.observationSiteList)).toEqual("[object Object]");
       });
@@ -38,21 +31,13 @@ describe("UK Weather Extremes", function() {
         expect(Object.keys(metOfficeData.observationSiteList).length).not.toEqual(0);
       });
 
-    });
-    
+    }); 
 
   });
 
   describe("app.js", function() {
 
     describe("createRegionObject()", function() {
-
-      beforeAll(function(done) {
-        setTimeout(function() {
-          value = 2000;
-          done();
-        }, 500);
-      });
 
       it("should return an object", function() {
         expect(Object.prototype.isPrototypeOf(weatherApp.createRegionObject('UK'))).toEqual(true);
@@ -85,9 +70,6 @@ describe("UK Weather Extremes", function() {
       });
 
     });
-
-
-
 
   });  
 
