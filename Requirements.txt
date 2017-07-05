@@ -12,16 +12,18 @@ V0.03 COMPLETE
 	-Substitute in jQuery methods for API calls and returns.
 
 V0.04
-	-DONE It should make a call to the Met Office Datapoint API and retrieve JSON for UK weather
+	-It should make a call to the Met Office Datapoint API and retrieve JSON for UK weather
 	observations site list.
 	-It should take the relevant site IDs from the region object, find the site in the site list, and
 	find the related grid co-ordinate values.
 	-It should add the grid co-ordinate values to the corresponding properties in the region object.
 
+V0.05
+	-Get details of weather extremes displayed in DOM utilising Handlebars.js HTML templating.
+
 TODO:
 	-What to do if co-ords could not be found? Fallback 1) Get a forecast from location and get coords. 2) Fallback by name at google maps stage?
 	-Implement fallback if API calls fail (using try/catch?)
-	-Get details of weather extremes displayed in DOM.
 	-Implement Google Maps API.
 	-Place pins in Google Map showing locations of weather extremes.
 		-Pins could have custom icons?

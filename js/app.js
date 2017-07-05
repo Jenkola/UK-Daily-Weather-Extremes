@@ -13,6 +13,8 @@
 	function init(region) {
  		regionObject = createRegionObject(region);
  		logExtremes(regionObject);
+ 		renderDataInfo(regionObject);
+ 		renderExtremes(regionObject);
  		metOfficeData.getObservationsSiteList();
  	}
 
@@ -55,6 +57,11 @@
 			returnObj.extremes.LMINT = extremesArr[getIndexByProperty(extremesArr, 'type', 'LMINT')];
 			returnObj.extremes.HRAIN = extremesArr[getIndexByProperty(extremesArr, 'type', 'HRAIN')];
 			returnObj.extremes.HSUN = extremesArr[getIndexByProperty(extremesArr, 'type', 'HSUN')];
+			returnObj.extremes.HMAXT.description = 'Highest Maximum Temperature';
+			returnObj.extremes.LMAXT.description = 'Lowest Maximum Temperature';
+			returnObj.extremes.LMINT.description = 'Lowest Minimum Temperature';
+			returnObj.extremes.HRAIN.description = 'Highest Rainfall Total';
+			returnObj.extremes.HSUN.description = 'Most Sunshine';
 
 			return returnObj;
 		}
@@ -75,6 +82,47 @@
 				regionObject.extremes.HRAIN.uom + ' recorded at ' + regionObject.extremes.HRAIN.locationName);		
 			console.log('The sunniest place was ' + regionObject.extremes.HSUN.locationName +
 			 ' which had ' + regionObject.extremes.HSUN.$ + ' ' + regionObject.extremes.HSUN.uom + ' of sunshine.');
+		}
+
+		//Creates table in HTML for retrieved data attributes from region object
+		//Utilises Handlebars.js
+		function renderDataInfo(regionObject) {
+
+			var $dataInfoListEl = $('#dataInfoList'),
+				$handlebarsTemplate = Handlebars.compile($('#data-info-template').html()),
+				templateContext = {dataReleaseDateAndTime: regionObject.issuedAt,
+					dataDate: regionObject.date,
+					region: regionObject.region
+			},
+				dataInfoHTML = $handlebarsTemplate(templateContext);
+
+			$dataInfoListEl.html('');
+			$dataInfoListEl.append(dataInfoHTML);
+		}
+
+		//Creates table in HTML for extremes data from region object
+		function renderExtremes(regionObject) {
+
+			var $extremesDataTableEl = $('#extremesDataTable'),
+				$handlebarsTemplate = Handlebars.compile($('#extremes-data-template').html());
+
+			for (var prop in regionObject.extremes) {
+
+				var extremesProp = regionObject.extremes[prop],
+					templateContext = {
+						extremeType: extremesProp.description,
+						measurementValue: extremesProp.$,
+						unitOfMeasurement: extremesProp.uom,
+						locationName: extremesProp.locationName,
+						locationId: extremesProp.locId,
+						longitude: 'To be implemented', //extremesProp.coOrds.longitude,
+						latitude: 'To be implemented' //extremesProp.coOrds.latitude
+				},
+					extremeListHTML = $handlebarsTemplate(templateContext);
+
+				$extremesDataTableEl.append(extremeListHTML);
+			}
+
 		}
 
 		function addCoOrdinatesToRegionObject(regionObject) {

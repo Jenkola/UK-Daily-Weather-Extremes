@@ -9,7 +9,56 @@
 	<body>
 		<h1>UK weather extremes for the previous day</h1>
 
+		<div>
+			<table>
+				<tr>
+					<th>Met Office data release</th>
+					<th>Date of data</th>
+					<th>Region</th>
+				</tr>
+				<tr id="dataInfoList">
+					<td>Date and time here</td>
+					<td>Date here</td>
+					<td>Region here</td>
+				</tr>
+		</div>
+
+		<div>
+			<table id="extremesDataTable">
+				<tr>
+					<th>Extreme</th>
+					<th>Measurement</th>
+					<th>Unit</th>
+					<th>Location</th>
+					<th>Loc ID</th>
+					<th>Longitude</th>
+					<th>Latitude</th>
+				</tr>			
+			</table>
+		</div>
+
+		<!--Handlebars.js template for data and region table-->
+		<script id="data-info-template" type="text/x-handlebars-template">
+			<td>{{dataReleaseDateAndTime}}</td>
+			<td>{{dataDate}}</td>
+			<td>{{region}}</td>			
+		</script>
+
+		<!--Handlebars.js template for extremes data-->
+		<script id="extremes-data-template" type="text/x-handlebars-template">
+			<tr>
+				<td>{{extremeType}}</td>
+				<td>{{measurementValue}}</td>
+				<td>{{unitOfMeasurement}}</td>
+				<td>{{locationName}}</td>
+				<td>{{locationId}}</td>
+				<td>{{longitude}}</td>
+				<td>{{latitude}}</td>
+			</tr>			
+		</script>		
+
 		<script src="libs/jquery-3.2.1.min.js"></script>
+		<script src="libs/handlebars-v4.0.5.js"></script>
 		<script src="js/apigetdata.js"></script>
 		<script src="js/app.js"></script>
 	</body>
