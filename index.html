@@ -9,6 +9,27 @@
 	<body>
 		<h1>UK weather extremes for the previous day</h1>
 
+		<h2>Select region: </h2>
+		<select id="regionSelect">
+			<option>UK</option>
+			<option>Northern Ireland</option>
+			<option>Orkney & Shetland</option>
+			<option>Highland & Eilean Siar</option>
+			<option>Grampian</option>
+			<option>Central Tayside & Fife</option>
+			<option>Strathclyde</option>
+			<option>Dumfries,Galloway,Lothian & Borders</option>
+			<option>North East England</option>
+			<option>Yorkshire & Humber</option>
+			<option>North West England</option>
+			<option>East Midlands</option>
+			<option>West Midlands</option>
+			<option>Wales</option>
+			<option>East of England</option>
+			<option>London & South East England</option>
+			<option>South West England</option>
+		</select>
+
 		<div>
 			<table>
 				<tr>
@@ -17,7 +38,7 @@
 					<th>Region</th>
 				</tr>
 				<tr id="dataInfoList">
-					<td>Date and time here</td>
+					<td>Data could not be retrieved from the Met Office.</td>
 					<td>Date here</td>
 					<td>Region here</td>
 				</tr>
@@ -25,15 +46,19 @@
 
 		<div>
 			<table id="extremesDataTable">
-				<tr>
+				<tr id="extremesDataTableHeadings">
 					<th>Extreme</th>
 					<th>Measurement</th>
 					<th>Unit</th>
 					<th>Location</th>
 					<th>Loc ID</th>
-					<th>Longitude</th>
 					<th>Latitude</th>
-				</tr>			
+					<th>Longitude</th>
+				</tr>
+				<tr>
+					<td>Data could not be retrieved blah blah.</td>
+					<!--Populated with extremes data by Handlebars.js-->
+				</tr>
 			</table>
 		</div>
 
@@ -52,8 +77,8 @@
 				<td>{{unitOfMeasurement}}</td>
 				<td>{{locationName}}</td>
 				<td>{{locationId}}</td>
-				<td>{{longitude}}</td>
 				<td>{{latitude}}</td>
+				<td>{{longitude}}</td>
 			</tr>			
 		</script>		
 
