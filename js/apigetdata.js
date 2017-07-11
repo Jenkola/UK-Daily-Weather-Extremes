@@ -6,7 +6,7 @@
 		$.get('http://datapoint.metoffice.gov.uk/public/data/txt/wxobs/ukextremes/json/latest?key=85d42778-8866-4eac-9f4e-ad2b5c42db1c', 
 			function(data) {
 				lib.extremesData = data;
-				weatherApp.init('UK');
+				getObservationsSiteList();
 			}
 		);	
 	}
@@ -39,7 +39,7 @@
 		$.get('http://datapoint.metoffice.gov.uk/public/data/val/wxobs/all/json/sitelist?key=85d42778-8866-4eac-9f4e-ad2b5c42db1c',
 			function(data) {
 				lib.observationSiteList = data;
-				weatherApp.addCoOrds();
+				weatherApp.init('UK');
 			}
 		);
 	}
