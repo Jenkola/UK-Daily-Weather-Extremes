@@ -1,0 +1,33 @@
+V0.01 COMPLETE
+	-It should make a call to the Met Office Datapoint API and retrieve JSON for UK weather extremes from the past day.
+	-It should be able to format the JSON object into a new object specific to the specified UK region.
+	-It should be able to log the weather extremes data for the specified UK region to the console.
+
+V0.02 COMPLETE
+	-Add Jasmine testing suite.
+	-Create and complete tests for V0.01.
+
+V0.03 COMPLETE
+	-Add jQuery.
+	-Substitute in jQuery methods for API calls and returns.
+
+V0.04 COMPLETE
+	-It should make a call to the Met Office Datapoint API and retrieve JSON for UK weather
+	observations site list.
+	-It should take the relevant site IDs from the region object, find the site in the site list, and
+	find the related grid co-ordinate values.
+	-It should add the grid co-ordinate values to the corresponding properties in the region object.
+
+V0.05 COMPLETE
+	-Get details of weather extremes displayed in DOM utilising Handlebars.js HTML templating.
+
+V0.06
+	-Get a google map focused on the UK into the HTML page using google maps javascript api.
+
+TODO:
+	-What to do if co-ords could not be found? Fallback 1) Get a forecast from location and get coords. 2) Fallback by name at google maps stage?
+	-Implement fallback if API calls fail (using try/catch?)
+	-Implement Google Maps API.
+	-Place pins in Google Map showing locations of weather extremes.
+		-Pins could have custom icons?
+	-Details of weather extremes could be displayed next to pins or via accordion on page?
