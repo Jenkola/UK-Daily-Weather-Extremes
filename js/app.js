@@ -1,21 +1,25 @@
 (function(root) {
 
-		//Get data from API
-	if (metOfficeData.extremesData === null
-		&& metOfficeData.observationSiteList === null) {
-		metOfficeData.getExtremesData();
-		//metOfficeData.getObservationsSiteList();
-	}
+	function addEventListeners() {
+		//Get extremes data from met office API
+		$(document).ready(function() {
+			metOfficeData.getExtremesData();
+		});
 
-	var regionObject;
+		//Allows select list in page to get data for selected regions
+		$('#regionSelect').on('change', function(e) {
+			var region = e.target.value;
+			init(region);
+		});
+	}
 
 	//Called by apigetdata.js when extremes data is returned from Met Office API
 	function init(region) {
  		regionObject = createRegionObject(region);
+ 		addCoOrds();
  		logExtremes(regionObject);
  		renderDataInfo(regionObject);
  		renderExtremes(regionObject);
- 		metOfficeData.getObservationsSiteList();
  	}
 
 	function addCoOrds() {
@@ -23,154 +27,156 @@
 		weatherApp.regionObject = regionObject;
 	}
 
-	
-
-		//Helper function to get the index number of an array element 
-		//that contains a specified property value
-		function getIndexByProperty(array, propertyName, propertyVal) {
-			for (var i = 0; i < array.length; i++) {
-				if (array[i][propertyName] === propertyVal) {
-					return i;
-				}
+	//Helper function to get the index number of an array element 
+	//that contains a specified property value
+	function getIndexByProperty(array, propertyName, propertyVal) {
+		for (var i = 0; i < array.length; i++) {
+			if (array[i][propertyName] === propertyVal) {
+				return i;
 			}
 		}
+	}
 
-		//Creates a better formatted object for weather extremes in a specified region
-		function createRegionObject(regionName) {
-			//extremesData.returnedData is the returned object from the Met Office API call.
-			var ukExtremesData = metOfficeData.extremesData.UkExtremes,
-				dateOfData = ukExtremesData.extremeDate,
-				dataIssuedAt = ukExtremesData.issuedAt,
-				extremesRegionsArray = ukExtremesData.Regions.Region,	
-				regionIndex = getIndexByProperty(extremesRegionsArray, 'name', regionName),
-				extremesArr = extremesRegionsArray[regionIndex].Extremes.Extreme;
+	//Creates a better formatted object for weather extremes in a specified region
+	function createRegionObject(regionName) {
+		//extremesData.returnedData is the returned object from the Met Office API call.
+		var ukExtremesData = metOfficeData.extremesData.UkExtremes,
+			dateOfData = ukExtremesData.extremeDate,
+			dataIssuedAt = ukExtremesData.issuedAt,
+			extremesRegionsArray = ukExtremesData.Regions.Region,	
+			regionIndex = getIndexByProperty(extremesRegionsArray, 'name', regionName),
+			extremesArr = extremesRegionsArray[regionIndex].Extremes.Extreme;
 
-			//Create new object
-			var returnObj = {};
+		//Create new object
+		var returnObj = {};
 
-			returnObj.date = dateOfData;
-			returnObj.issuedAt = dataIssuedAt;
-			returnObj.region = regionName;
-			returnObj.extremes = {};
-			returnObj.extremes.HMAXT = extremesArr[getIndexByProperty(extremesArr, 'type', 'HMAXT')];
-			returnObj.extremes.LMAXT = extremesArr[getIndexByProperty(extremesArr, 'type', 'LMAXT')];
-			returnObj.extremes.LMINT = extremesArr[getIndexByProperty(extremesArr, 'type', 'LMINT')];
-			returnObj.extremes.HRAIN = extremesArr[getIndexByProperty(extremesArr, 'type', 'HRAIN')];
-			returnObj.extremes.HSUN = extremesArr[getIndexByProperty(extremesArr, 'type', 'HSUN')];
-			returnObj.extremes.HMAXT.description = 'Highest Maximum Temperature';
-			returnObj.extremes.LMAXT.description = 'Lowest Maximum Temperature';
-			returnObj.extremes.LMINT.description = 'Lowest Minimum Temperature';
-			returnObj.extremes.HRAIN.description = 'Highest Rainfall Total';
-			returnObj.extremes.HSUN.description = 'Most Sunshine';
+		returnObj.date = dateOfData;
+		returnObj.issuedAt = dataIssuedAt;
+		returnObj.region = regionName;
+		returnObj.extremes = {};
+		returnObj.extremes.HMAXT = extremesArr[getIndexByProperty(extremesArr, 'type', 'HMAXT')];
+		returnObj.extremes.LMAXT = extremesArr[getIndexByProperty(extremesArr, 'type', 'LMAXT')];
+		returnObj.extremes.LMINT = extremesArr[getIndexByProperty(extremesArr, 'type', 'LMINT')];
+		returnObj.extremes.HRAIN = extremesArr[getIndexByProperty(extremesArr, 'type', 'HRAIN')];
+		returnObj.extremes.HSUN = extremesArr[getIndexByProperty(extremesArr, 'type', 'HSUN')];
+		returnObj.extremes.HMAXT.description = 'Highest Maximum Temperature';
+		returnObj.extremes.LMAXT.description = 'Lowest Maximum Temperature';
+		returnObj.extremes.LMINT.description = 'Lowest Minimum Temperature';
+		returnObj.extremes.HRAIN.description = 'Highest Rainfall Total';
+		returnObj.extremes.HSUN.description = 'Most Sunshine';
 
-			return returnObj;
-		}
+		return returnObj;
+	}
 
-		//Logs data to the console for selected region object
-		function logExtremes(regionObject) {
+	//Logs data to the console for selected region object
+	function logExtremes(regionObject) {
 
-			console.log('Data released by the Met Office at ' + regionObject.issuedAt);
-			console.log('Data is for the following date: ' + regionObject.date);
-			console.log('Data is for the following region: ' + regionObject.region);
-			console.log('The highest maximum temperature was ' + regionObject.extremes.HMAXT.$ + 
-				regionObject.extremes.HMAXT.uom + ' recorded at ' + regionObject.extremes.HMAXT.locationName);
-			console.log('The lowest maximum temperature was ' + regionObject.extremes.LMAXT.$ + 
-				regionObject.extremes.LMAXT.uom + ' recorded at ' + regionObject.extremes.LMAXT.locationName);
-			console.log('The lowest minimum temperature was ' + regionObject.extremes.LMINT.$ + 
-				regionObject.extremes.LMINT.uom + ' recorded at ' + regionObject.extremes.LMINT.locationName);		
-			console.log('The highest rainfall total was ' + regionObject.extremes.HRAIN.$ + 
-				regionObject.extremes.HRAIN.uom + ' recorded at ' + regionObject.extremes.HRAIN.locationName);		
-			console.log('The sunniest place was ' + regionObject.extremes.HSUN.locationName +
-			 ' which had ' + regionObject.extremes.HSUN.$ + ' ' + regionObject.extremes.HSUN.uom + ' of sunshine.');
-		}
+		console.log('Data released by the Met Office at ' + regionObject.issuedAt);
+		console.log('Data is for the following date: ' + regionObject.date);
+		console.log('Data is for the following region: ' + regionObject.region);
+		console.log('The highest maximum temperature was ' + regionObject.extremes.HMAXT.$ + 
+			regionObject.extremes.HMAXT.uom + ' recorded at ' + regionObject.extremes.HMAXT.locationName);
+		console.log('The lowest maximum temperature was ' + regionObject.extremes.LMAXT.$ + 
+			regionObject.extremes.LMAXT.uom + ' recorded at ' + regionObject.extremes.LMAXT.locationName);
+		console.log('The lowest minimum temperature was ' + regionObject.extremes.LMINT.$ + 
+			regionObject.extremes.LMINT.uom + ' recorded at ' + regionObject.extremes.LMINT.locationName);		
+		console.log('The highest rainfall total was ' + regionObject.extremes.HRAIN.$ + 
+			regionObject.extremes.HRAIN.uom + ' recorded at ' + regionObject.extremes.HRAIN.locationName);		
+		console.log('The sunniest place was ' + regionObject.extremes.HSUN.locationName +
+		 ' which had ' + regionObject.extremes.HSUN.$ + ' ' + regionObject.extremes.HSUN.uom + ' of sunshine.');
+	}
 
-		//Creates table in HTML for retrieved data attributes from region object
-		//Utilises Handlebars.js
-		function renderDataInfo(regionObject) {
+	//Creates table in HTML for retrieved data attributes from region object
+	//Utilises Handlebars.js
+	function renderDataInfo(regionObject) {
 
-			var $dataInfoListEl = $('#dataInfoList'),
-				$handlebarsTemplate = Handlebars.compile($('#data-info-template').html()),
-				templateContext = {dataReleaseDateAndTime: regionObject.issuedAt,
-					dataDate: regionObject.date,
-					region: regionObject.region
-			},
-				dataInfoHTML = $handlebarsTemplate(templateContext);
+		var $dataInfoListEl = $('#dataInfoList'),
+			$handlebarsTemplate = Handlebars.compile($('#data-info-template').html()),
+			templateContext = {dataReleaseDateAndTime: regionObject.issuedAt,
+				dataDate: regionObject.date,
+				region: regionObject.region
+		},
+			dataInfoHTML = $handlebarsTemplate(templateContext);
 
-			$dataInfoListEl.html('');
-			$dataInfoListEl.append(dataInfoHTML);
-		}
+		$dataInfoListEl.html('');
+		$dataInfoListEl.append(dataInfoHTML);
+	}
 
-		//Creates table in HTML for extremes data from region object
-		function renderExtremes(regionObject) {
+	//Creates table in HTML for extremes data from region object
+	function renderExtremes(regionObject) {
 
-			var $extremesDataTableEl = $('#extremesDataTable'),
-				$handlebarsTemplate = Handlebars.compile($('#extremes-data-template').html());
+		var $extremesDataTableEl = $('#extremesDataTable'),
+			$extremesDataTableHeadings = $('#extremesDataTableHeadings'),
+			$handlebarsTemplate = Handlebars.compile($('#extremes-data-template').html());
 
-			for (var prop in regionObject.extremes) {
+			$extremesDataTableEl.html($extremesDataTableHeadings);
 
-				var extremesProp = regionObject.extremes[prop],
-					templateContext = {
-						extremeType: extremesProp.description,
-						measurementValue: extremesProp.$,
-						unitOfMeasurement: extremesProp.uom,
-						locationName: extremesProp.locationName,
-						locationId: extremesProp.locId,
-						longitude: 'To be implemented', //extremesProp.coOrds.longitude,
-						latitude: 'To be implemented' //extremesProp.coOrds.latitude
-				},
-					extremeListHTML = $handlebarsTemplate(templateContext);
+		for (var prop in regionObject.extremes) {
 
-				$extremesDataTableEl.append(extremeListHTML);
-			}
-
-		}
-
-		function addCoOrdinatesToRegionObject(regionObject) {
-			//Loops through the relevant properties in regionObject
-			var extremesData = regionObject.extremes;
-			for (var prop in extremesData) {
-				var locationId = extremesData[prop].locId;
-				var coOrdsObject = getCoOrdinatesFromSiteId(locationId);
-
-				if (coOrdsObject) {
-					extremesData[prop].coOrds = coOrdsObject;
-				}
-				
-			}
-			//i.e. HMAXT, LMAXT, LMINT, HRAIN, HSUN
-			//Grabs the 'locId' property from each one.
-			function getCoOrdinatesFromSiteId(locId) {
-				//Trim off any zeros at the beginning of the locID value
-				//e.g. '03529' => '3529'
-				locId = String(Number(locId));
-				var coOrdsObject = {}
-
-				//Loops through the array in metOfficeData.observationSiteList.Locations.Location
-				var locationsArray = metOfficeData.observationSiteList.Locations.Location;
-				//Utilise getIndexByProperty helper function?
-				var matchingLocationIndex = getIndexByProperty(locationsArray, 'id', locId);
-				//If 'id' property in array object === locID value,
-				if(matchingLocationIndex || matchingLocationIndex === 0) {
-					//Return the 'latitude' and 'longitude' properties from the array object.
-					coOrdsObject.latitude = locationsArray[matchingLocationIndex].latitude;
-					coOrdsObject.longitude = locationsArray[matchingLocationIndex].longitude;
-					return coOrdsObject;
-				} else {
-					console.log('location id could not be found in site list: ' + locId);
-				}
-				
+			var extremesProp = regionObject.extremes[prop],
+				templateContext = {
+					extremeType: extremesProp.description,
+					measurementValue: extremesProp.$,
+					unitOfMeasurement: extremesProp.uom,
+					locationName: extremesProp.locationName,
+					locationId: extremesProp.locId,
+					longitude: 'Data not found',
+					latitude: 'Data not found'
 			};
+
+			if (extremesProp.coOrds) {
+				templateContext.latitude = extremesProp.coOrds.latitude;
+				templateContext.longitude = extremesProp.coOrds.longitude;
+			}
 			
-			return regionObject;
-			//Add the 'latitude' and 'longitude' properties returned from getCoOrdinatesFromSiteId()
-			//into the regionObject.
-			//So that each place in the regionObject now has grid coOrdinate values as well.
-			//****Build in some fallback if location could not be found in observationSiteList****?
+			var	extremeListHTML = $handlebarsTemplate(templateContext);
+			$extremesDataTableEl.append(extremeListHTML);
 		}
+	}
 
-	
+	function addCoOrdinatesToRegionObject(regionObject) {
+		//Loops through the relevant properties in regionObject
+		var extremesData = regionObject.extremes;
+		for (var prop in extremesData) {
+			var locationId = extremesData[prop].locId;
+			var coOrdsObject = getCoOrdinatesFromSiteId(locationId);
 
-	//Global methods to attempt to get API data and to access contents of returned data.
+			if (coOrdsObject) {
+				extremesData[prop].coOrds = coOrdsObject;
+			}
+			
+		}
+		//i.e. HMAXT, LMAXT, LMINT, HRAIN, HSUN
+		//Grabs the 'locId' property from each one.
+		function getCoOrdinatesFromSiteId(locId) {
+			//Trim off any zeros at the beginning of the locID value
+			//e.g. '03529' => '3529'
+			locId = String(Number(locId));
+			var coOrdsObject = {}
+
+			//Loops through the array in metOfficeData.observationSiteList.Locations.Location
+			var locationsArray = metOfficeData.observationSiteList.Locations.Location;
+			//Utilise getIndexByProperty helper function?
+			var matchingLocationIndex = getIndexByProperty(locationsArray, 'id', locId);
+			//If 'id' property in array object === locID value,
+			if(matchingLocationIndex || matchingLocationIndex === 0) {
+				//Return the 'latitude' and 'longitude' properties from the array object.
+				coOrdsObject.latitude = locationsArray[matchingLocationIndex].latitude;
+				coOrdsObject.longitude = locationsArray[matchingLocationIndex].longitude;
+				return coOrdsObject;
+			} else {
+				console.log('location id could not be found in site list: ' + locId);
+			}
+			
+		};
+		
+		return regionObject;
+		//Add the 'latitude' and 'longitude' properties returned from getCoOrdinatesFromSiteId()
+		//into the regionObject.
+		//So that each place in the regionObject now has grid coOrdinate values as well.
+		//****Build in some fallback if location could not be found in observationSiteList****?
+	}
+
 	var lib = {
 
 		init: init,
@@ -180,14 +186,31 @@
 		addCoOrdinatesToRegionObject: addCoOrdinatesToRegionObject,
 		regionObject: regionObject
 
-	}
+	},
+		regionObject;
 
-	//lib object is made available to global scope via extremesData.
+	//lib object is made available to global scope.
 	root.weatherApp = lib;
 
-
+	addEventListeners();
 
 })(this);
+
+//Order of running:
+//1.App calls apigetdata -> get extremes data
+	//This calls metOffice datapoint for extremes data JSON
+	//When this returns it calls...
+//2.apigetdata -> get observations site list
+	//This calls metoffice datapoint for weather observations sitelist
+	//When this returns...	
+//3.Apigetdata calls app init('UK')
+	//Creates the region object
+	//adds co-ordinates (addCoOrds)
+		//This scans through the retreived observations sitelist for site IDs that match those in the region object
+		//If so, it takes the co-ordinates from the sitelist and adds to the region object
+		//However, some site IDs (generally those beginning with '99') are not in the site list, so co-ords are not added.
+	//Renders the extremes data into a table in the HTML
+
 
 //**REGIONS BY NAME**
 
