@@ -125,8 +125,8 @@
 			};
 
 			if (extremesProp.coOrds) {
-				templateContext.latitude = extremesProp.coOrds.latitude;
-				templateContext.longitude = extremesProp.coOrds.longitude;
+				templateContext.latitude = extremesProp.coOrds.lat;
+				templateContext.longitude = extremesProp.coOrds.lng;
 			}
 			
 			var	extremeListHTML = $handlebarsTemplate(templateContext);
@@ -161,8 +161,8 @@
 			//If 'id' property in array object === locID value,
 			if(matchingLocationIndex || matchingLocationIndex === 0) {
 				//Return the 'latitude' and 'longitude' properties from the array object.
-				coOrdsObject.latitude = locationsArray[matchingLocationIndex].latitude;
-				coOrdsObject.longitude = locationsArray[matchingLocationIndex].longitude;
+				coOrdsObject.lat = Number(locationsArray[matchingLocationIndex].latitude);
+				coOrdsObject.lng = Number(locationsArray[matchingLocationIndex].longitude);
 				return coOrdsObject;
 			} else {
 				console.log('location id could not be found in site list: ' + locId);

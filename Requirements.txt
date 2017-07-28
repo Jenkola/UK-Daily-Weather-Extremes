@@ -24,6 +24,12 @@ V0.05 COMPLETE
 V0.06 COMPLETE
 	-Get a google map focused on the UK into the HTML page using google maps javascript api.
 
+V0.07 COMPLETE
+	-Create functions in mapconfig.js to:
+		-Add markers into the google map.
+		-Delete all markers from the map.
+		-Add markers to the map relating to existing coOrds objects in current regionObject.
+
 TODO:
 	-What to do if co-ords could not be found? Fallback 1) Get a forecast from location and get coords. 2) Fallback by name at google maps stage?
 	-Implement fallback if API calls fail (using try/catch?)
