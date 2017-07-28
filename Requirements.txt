@@ -21,7 +21,7 @@ V0.04 COMPLETE
 V0.05 COMPLETE
 	-Get details of weather extremes displayed in DOM utilising Handlebars.js HTML templating.
 
-V0.06
+V0.06 COMPLETE
 	-Get a google map focused on the UK into the HTML page using google maps javascript api.
 
 TODO:
@@ -31,3 +31,5 @@ TODO:
 	-Place pins in Google Map showing locations of weather extremes.
 		-Pins could have custom icons?
 	-Details of weather extremes could be displayed next to pins or via accordion on page?
+
+
