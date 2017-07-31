@@ -20,6 +20,7 @@
  		logExtremes(regionObject);
  		renderDataInfo(regionObject);
  		renderExtremes(regionObject);
+ 		mapConfig.requestGoogleMapApi();
  	}
 
 	function addCoOrds() {
@@ -210,6 +211,9 @@
 		//If so, it takes the co-ordinates from the sitelist and adds to the region object
 		//However, some site IDs (generally those beginning with '99') are not in the site list, so co-ords are not added.
 	//Renders the extremes data into a table in the HTML
+//4.App init calls mapConfig.requestGoogleMapApi();
+	//This requests the google map API
+	//The callback then calls initmap which in turn calls to addExtremesLocationMarkers().
 
 
 //**REGIONS BY NAME**

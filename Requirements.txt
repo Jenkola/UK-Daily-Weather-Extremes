@@ -30,10 +30,14 @@ V0.07 COMPLETE
 		-Delete all markers from the map.
 		-Add markers to the map relating to existing coOrds objects in current regionObject.
 
+V0.08 COMPLETE
+	-Call to add markers for regionobject when page loaded.
+	-Call to add new markers when new region selected by user.
+	-The map's bounds is around each location/region chosen.
+
 TODO:
 	-What to do if co-ords could not be found? Fallback 1) Get a forecast from location and get coords. 2) Fallback by name at google maps stage?
 	-Implement fallback if API calls fail (using try/catch?)
-	-Implement Google Maps API.
 	-Place pins in Google Map showing locations of weather extremes.
 		-Pins could have custom icons?
 	-Details of weather extremes could be displayed next to pins or via accordion on page?
